@@ -55,11 +55,4 @@ npm run dev
 cd server
 npm start
 ```
-
-Adjust scripts if your environment uses different commands or package managers.
-
-**Notes & tips**
-- This repository was re-pushed as a fresh repository to remove prior commit history; keep a separate backup if you need the old history.
-- If you want to deploy your own live demo, update the `server` environment variables and host the frontend on any static host or use the provided demo link.
-
 Made by Ritesh
