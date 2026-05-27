@@ -1,0 +1,28 @@
+# Render Blueprint — one-click deploy for the Grid Dominion API.
+# Render reads this when you "New + → Blueprint" and point it at this repo.
+# Docs: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: grid-dominion-api
+    runtime: node
+    plan: free
+    region: singapore        # change to oregon / frankfurt etc. if closer to you
+    branch: main
+    rootDir: server          # backend lives in /server
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      # The values below MUST be filled in via the Render dashboard before first deploy.
+      # Marked sync:false so they aren't expected from this file.
+      - key: MONGODB_URI
+        sync: false          # paste from MongoDB Atlas → Connect → Drivers
+      - key: JWT_SECRET
+        sync: false          # generate: node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
+      - key: CORS_ORIGIN
+        sync: false          # comma-separated, e.g. https://yoursite.hostingersite.com

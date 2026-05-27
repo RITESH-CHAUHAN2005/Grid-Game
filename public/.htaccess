@@ -1,0 +1,38 @@
+# Hostinger Apache config for a React Router (BrowserRouter) SPA.
+# Vite copies the public/ folder verbatim into dist/, so this lands in
+# dist/.htaccess after `npm run build` — exactly where Hostinger needs it.
+
+# ---- 1) SPA fallback: serve index.html for any non-file, non-dir request ----
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Don't touch real files (CSS, JS, images, etc.)
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Everything else -> index.html so React Router can handle it
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# ---- 2) Long-cache hashed asset files; never cache index.html ----
+<IfModule mod_headers.c>
+  <FilesMatch "\.(?:js|css|woff2?|svg|png|jpg|jpeg|gif|webp|avif|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "index\.html$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# ---- 3) Force HTTPS (Hostinger free SSL is auto-provisioned) ----
+<IfModule mod_rewrite.c>
+  RewriteCond %{HTTPS} off
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# ---- 4) Gzip / Brotli compression ----
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml
+</IfModule>

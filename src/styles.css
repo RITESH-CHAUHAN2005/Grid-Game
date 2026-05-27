@@ -1,0 +1,267 @@
+@import "tailwindcss" source(none);
+@import "tw-animate-css";
+/* Cinzel + Inter + JetBrains Mono are loaded via <link> in index.html */
+
+@source "../src";
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  /* Royal palette aliases (kept old neon-* names for backwards compat with components) */
+  --color-neon-purple: var(--royal-emerald);
+  --color-neon-cyan: var(--royal-gold);
+  --color-neon-blue: var(--royal-jade);
+  --color-neon-pink: var(--royal-crimson);
+  --color-royal-emerald: var(--royal-emerald);
+  --color-royal-gold: var(--royal-gold);
+  --color-royal-jade: var(--royal-jade);
+  --color-royal-crimson: var(--royal-crimson);
+  --color-royal-cream: var(--royal-cream);
+  --font-display: "Cinzel", "Inter", system-ui, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+:root {
+  --radius: 0.75rem;
+
+  /* === Royal Obsidian Palette === */
+  --background: #07090d;           /* deep obsidian */
+  --foreground: #f5ecd6;           /* champagne cream */
+  --card: rgba(20, 24, 32, 0.65);
+  --card-foreground: #f5ecd6;
+  --popover: #0c1015;
+  --popover-foreground: #f5ecd6;
+
+  --primary: #d4a253;              /* antique gold */
+  --primary-foreground: #07090d;
+  --secondary: #14181f;
+  --secondary-foreground: #f5ecd6;
+  --muted: #161b22;
+  --muted-foreground: #9aa4b2;
+  --accent: #10b67a;               /* imperial emerald */
+  --accent-foreground: #07090d;
+  --destructive: #c0392b;          /* royal crimson */
+  --destructive-foreground: #f5ecd6;
+  --border: rgba(212, 162, 83, 0.16);
+  --input: rgba(20, 24, 32, 0.7);
+  --ring: #d4a253;
+
+  /* Named royal tokens */
+  --royal-emerald: #10b67a;        /* primary winning hue */
+  --royal-emerald-bright: #34d399;
+  --royal-gold: #d4a253;           /* antique gold accent */
+  --royal-gold-bright: #f5cd7c;
+  --royal-jade: #0f8a5f;            /* deep jade for depth */
+  --royal-crimson: #c0392b;        /* steal / danger */
+  --royal-crimson-bright: #e74c3c;
+  --royal-cream: #f5ecd6;          /* primary text */
+  --royal-onyx: #0c1015;            /* card body */
+  --royal-velvet: #1a1f2b;          /* elevated surface */
+
+  --gradient-royal: linear-gradient(135deg, #d4a253 0%, #f5cd7c 50%, #10b67a 100%);
+  --gradient-emerald: linear-gradient(135deg, #10b67a 0%, #0f8a5f 100%);
+  --gradient-gold: linear-gradient(135deg, #d4a253 0%, #f5cd7c 100%);
+  --gradient-noir: linear-gradient(180deg, #0c1015 0%, #07090d 100%);
+
+  /* Backwards compat — old neon-* tokens now point to royal */
+  --neon-purple: #d4a253;
+  --neon-cyan: #10b67a;
+  --neon-blue: #0f8a5f;
+  --neon-pink: #c0392b;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+  * {
+    border-color: var(--color-border);
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    background-image:
+      radial-gradient(ellipse at 50% -20%, rgba(212, 162, 83, 0.10), transparent 55%),
+      radial-gradient(ellipse at 0% 100%, rgba(16, 182, 122, 0.08), transparent 55%);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* Use fixed background only on desktop — mobile suffers with background-attachment: fixed */
+  @media (min-width: 1024px) {
+    body { background-attachment: fixed; }
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: 0.01em;
+    font-weight: 600;
+  }
+  /* Body copy stays sans for readability */
+  p, span, button, a, input, label, li, div { font-family: var(--font-sans); }
+
+  ::-webkit-scrollbar { width: 9px; height: 9px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--royal-gold), var(--royal-emerald));
+    border-radius: 999px;
+  }
+  ::selection { background: rgba(212, 162, 83, 0.35); color: var(--royal-cream); }
+}
+
+@layer utilities {
+  /* Glass surfaces — minimal blur for better mobile performance */
+  .glass {
+    background: rgba(20, 24, 32, 0.7);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(212, 162, 83, 0.14);
+  }
+  .glass-strong {
+    background: rgba(12, 16, 21, 0.88);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(212, 162, 83, 0.18);
+    box-shadow:
+      0 1px 0 rgba(245, 205, 124, 0.08) inset,
+      0 20px 60px -20px rgba(0, 0, 0, 0.6);
+  }
+  .glass-noir {
+    background: rgba(7, 9, 13, 0.85);
+    border: 1px solid rgba(212, 162, 83, 0.12);
+  }
+  /* Royal gold filigree border — used for premium cards */
+  .royal-border {
+    border: 1px solid transparent;
+    background:
+      linear-gradient(var(--royal-onyx), var(--royal-onyx)) padding-box,
+      linear-gradient(135deg, rgba(212, 162, 83, 0.6), rgba(16, 182, 122, 0.3) 50%, rgba(212, 162, 83, 0.6)) border-box;
+  }
+  .text-gradient {
+    background: var(--gradient-royal);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .text-gold {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .glow-gold { box-shadow: 0 0 30px rgba(212, 162, 83, 0.35); }
+  .glow-emerald { box-shadow: 0 0 30px rgba(16, 182, 122, 0.35); }
+  /* Backwards compat */
+  .glow-purple { box-shadow: 0 0 30px rgba(212, 162, 83, 0.35); }
+  .glow-cyan { box-shadow: 0 0 30px rgba(16, 182, 122, 0.35); }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(212, 162, 83, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212, 162, 83, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Card lift — disabled on mobile for better perf */
+  .card-3d {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  @media (min-width: 1024px) and (hover: hover) {
+    .card-3d:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 20px 40px -20px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(212, 162, 83, 0.25);
+    }
+  }
+
+  /* Tile capture flash — lightweight, no filter (filter is GPU-heavy) */
+  @keyframes tile-flash {
+    0% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .tile-flash { animation: tile-flash 0.3s cubic-bezier(0.2, 0.7, 0.2, 1); }
+
+  /* Disable expensive animations for users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Royal corner ornaments */
+  .ornament-corners {
+    position: relative;
+  }
+  .ornament-corners::before,
+  .ornament-corners::after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 1px solid rgba(212, 162, 83, 0.55);
+    pointer-events: none;
+  }
+  .ornament-corners::before {
+    top: 8px;
+    left: 8px;
+    border-right: 0;
+    border-bottom: 0;
+  }
+  .ornament-corners::after {
+    bottom: 8px;
+    right: 8px;
+    border-left: 0;
+    border-top: 0;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(212, 162, 83, 0.5); }
+    50% { box-shadow: 0 0 20px 3px rgba(212, 162, 83, 0.6); }
+  }
+  .animate-pulse-glow { animation: pulse-glow 2.4s ease-in-out infinite; }
+
+  @keyframes float-up {
+    0% { transform: translateY(0); opacity: 0; }
+    10% { opacity: 0.55; }
+    100% { transform: translateY(-120vh); opacity: 0; }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  .shimmer {
+    background: linear-gradient(90deg,
+      transparent,
+      rgba(245, 205, 124, 0.15),
+      transparent);
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
+  }
+}
